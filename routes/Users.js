@@ -1,9 +1,10 @@
 const {Show, User} = require('../models/index.js')
 const express = require('express')
 const users_router = express.Router()
+const {check, validationResult} = require('express-validator')
 
 users_router.get('/', async (req, res) => {
-    res.json(await User.findAll())
+    res.json(await User.findAll({include: Show}))
 })
 users_router.get('/:id', async (req, res) => {
     res.json(await User.findOne({where: {id: req.params.id}}))
@@ -11,7 +12,7 @@ users_router.get('/:id', async (req, res) => {
 users_router.get('/:id/shows', async (req, res) => {
     res.json(await User.findOne({where: {id: req.params.id}, include: Show}))
 })
-users_router.put('/:id/show:showid', async (req, res) => { // add a check that the value passed in req.body is integer for this one
+users_router.put('/:id/shows/:showid', async (req, res) => { // add a check that the value passed in req.body is integer for this one
     const userToUpdate = await User.findByPk(req.params.id)
     const showToAdd = await Show.findByPk(req.params.showid)
     await userToUpdate.addShow(showToAdd)
