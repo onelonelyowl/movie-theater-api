@@ -22,5 +22,5 @@ const seed = async () => {
 }
 
 //export my seed function
-// module.exports = seed
-seed()
+module.exports = seed
+// seed()
